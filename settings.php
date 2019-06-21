@@ -341,6 +341,11 @@ if ($ADMIN->fulltree) {
         $settings->add(new auth_ldap_admin_setting_special_ntlm_configtext('auth_ldap_syncplus/ntlmsso_remoteuserformat',
                 get_string('auth_ntlmsso_remoteuserformat_key', 'auth_ldap'),
                 get_string('auth_ntlmsso_remoteuserformat', 'auth_ldap'), '', PARAM_RAW_TRIMMED));
+
+        // Authentication type
+        $settings->add(new admin_setting_configtext('auth_ldap_syncplus/auth_type',
+                get_string('auth_type_key', 'auth_ldap_syncplus'),
+                get_string('auth_type', 'auth_ldap_syncplus'), 'ldap', PARAM_RAW_TRIMMED));
     }
 
     // Display locking / mapping of profile fields.

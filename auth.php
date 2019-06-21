@@ -219,7 +219,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
                          WHERE u.auth = :auth
                                AND u.deleted = 0
                                AND e.username IS NULL";
-                $remove_users = $DB->get_records_sql($sql, array('auth'=>$this->authtype));
+                $remove_users = $DB->get_records_sql($sql, array('auth'=>$this->config->auth_type));
 
                 if (!empty($remove_users)) {
                     mtrace(get_string('userentriestoremove', 'auth_ldap', count($remove_users)));
@@ -244,7 +244,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
                                AND u.deleted = 0
                                AND u.suspended = 0
                                AND e.username IS NULL";
-                $remove_users = $DB->get_records_sql($sql, array('auth'=>$this->authtype));
+                $remove_users = $DB->get_records_sql($sql, array('auth'=>$this->config->auth_type));
 
                 if (!empty($remove_users)) {
                     mtrace(get_string('userentriestoremove', 'auth_ldap', count($remove_users)));
@@ -270,7 +270,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
                           JOIN {tmp_extuser} e ON (u.username = e.username AND u.mnethostid = e.mnethostid)
                          WHERE (u.auth = 'nologin' OR (u.auth = ? AND u.suspended = 1)) AND u.deleted = 0";
                 // Note: 'nologin' is there for backwards compatibility.
-                $revive_users = $DB->get_records_sql($sql, array($this->authtype));
+                $revive_users = $DB->get_records_sql($sql, array($this->config->auth_type));
 
                 if (!empty($revive_users)) {
                     mtrace(get_string('userentriestorevive', 'auth_ldap', count($revive_users)));
@@ -278,7 +278,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
                     foreach ($revive_users as $user) {
                         $updateuser = new stdClass();
                         $updateuser->id = $user->id;
-                        $updateuser->auth = $this->authtype;
+                        $updateuser->auth = $this->config->auth_type;
                         $updateuser->suspended = 0;
                         user_update_user($updateuser, false);
                         mtrace("\t".get_string('auth_dbreviveduser', 'auth_db', array('name'=>$user->username, 'id'=>$user->id)));
@@ -300,7 +300,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
                       JOIN {tmp_extuser} e ON (u.username = e.username AND u.mnethostid = e.mnethostid)
                      WHERE (u.auth = 'nologin' OR (u.auth = ? AND u.suspended = 1)) AND u.deleted = 0";
             // Note: 'nologin' is there for backwards compatibility.
-            $revive_users = $DB->get_records_sql($sql, array($this->authtype));
+            $revive_users = $DB->get_records_sql($sql, array($this->config->auth_type));
 
             if (!empty($revive_users)) {
                 mtrace(get_string('userentriestorevive', 'auth_ldap', count($revive_users)));
@@ -308,7 +308,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
                 foreach ($revive_users as $user) {
                     $updateuser = new stdClass();
                     $updateuser->id = $user->id;
-                    $updateuser->auth = $this->authtype;
+                    $updateuser->auth = $this->config->auth_type;
                     $updateuser->suspended = 0;
                     user_update_user($updateuser, false);
                     mtrace("\t".get_string('auth_dbreviveduser', 'auth_db', array('name'=>$user->username, 'id'=>$user->id)));
@@ -326,7 +326,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
                            AND u.deleted = 0
                            AND u.suspended = 0
                            AND e.username IS NULL";
-            $remove_users = $DB->get_records_sql($sql, array('auth'=>$this->authtype));
+            $remove_users = $DB->get_records_sql($sql, array('auth'=>$this->config->auth_type));
 
             if (!empty($remove_users)) {
                 mtrace(get_string('userentriestosuspend', 'auth_ldap_syncplus', count($remove_users)));
@@ -352,7 +352,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
                      WHERE u.auth = :auth
                            AND u.deleted = 0
                            AND e.username IS NULL";
-            $remove_users = $DB->get_records_sql($sql, array('auth'=>$this->authtype));
+            $remove_users = $DB->get_records_sql($sql, array('auth'=>$this->config->auth_type));
 
             if (!empty($remove_users)) {
                 mtrace(get_string('userentriestoremove', 'auth_ldap', count($remove_users)));
@@ -389,7 +389,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
             $users = $DB->get_records_sql('SELECT u.username, u.id
                                              FROM {user} u
                                             WHERE u.deleted = 0 AND u.auth = ? AND u.mnethostid = ?',
-                                          array($this->authtype, $CFG->mnet_localhost_id));
+                                          array($this->config->auth_type, $CFG->mnet_localhost_id));
             if (!empty($users)) {
                 mtrace(get_string('userentriestoupdate', 'auth_ldap', count($users)));
 
@@ -440,7 +440,7 @@ class auth_plugin_ldap_syncplus extends auth_plugin_ldap {
                     // Prep a few params.
                     $user->modified   = time();
                     $user->confirmed  = 1;
-                    $user->auth       = $this->authtype;
+                    $user->auth       = $this->config->auth_type;
                     $user->mnethostid = $CFG->mnet_localhost_id;
                     // get_userinfo_asobj() might have replaced $user->username with the value
                     // from the LDAP server (which can be mixed-case). Make sure it's lowercase.

@@ -39,3 +39,5 @@ $string['syncroles'] = 'LDAP roles sync job (Sync Plus)';
 $string['synctask'] = 'LDAP users sync job (Sync Plus)';
 $string['userentriestosuspend'] = 'User entries to be suspended: {$a}';
 $string['waitinginremovalqueue'] = 'Waiting in removal queue for {$a->days} day grace period: {$a->name} ID {$a->id}';
+$string['auth_type_key'] = 'Authentication type';
+$string['auth_type'] = 'Override the authentication method used for this user (e.g. shibboelth).';
